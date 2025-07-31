@@ -1,5 +1,9 @@
 name: Generate Mermaid Diagrams
 
+# ← ここで contents の書き込み権限を付与
+permissions:
+  contents: write
+
 on:
   push:
     paths:
@@ -10,17 +14,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ① ソース取得（GITHUB_TOKENで認証・書き込み可能）
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          persist-credentials: true
 
+      # ② Node.js セットアップ
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
+      # ③ Mermaid CLI インストール
       - name: Install Mermaid CLI
         run: npm install -g @mermaid-js/mermaid-cli
 
+      # ④ フローをPNG/SVGに変換
       - name: Generate Diagrams
         env:
           PUPPETEER_EXECUTABLE_PATH: "/usr/bin/google-chrome"
@@ -32,6 +42,7 @@ jobs:
             mmdc -i "$f" -o "$n.svg"
           done
 
+      # ⑤ 生成物をコミット＆プッシュ
       - name: Commit Diagrams
         run: |
           git config --local user.email "actions@github.com"
