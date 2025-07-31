@@ -27,12 +27,12 @@ jobs:
             mmdc -i "$f" -o "$n.svg"
           done
 
-- name: Generate Diagrams
-  run: |
-    for f in docs/flows/*.mmd; do
-      n=${f%.mmd}
-      mmdc -i "$f" -o "$n.png" --no-sandbox
-      mmdc -i "$f" -o "$n.svg" --no-sandbox
-    done
+      - name: Generate Diagrams
+        run: |
+         for f in docs/flows/*.mmd; do
+           n=${f%.mmd}
+           mmdc -i "$f" -o "$n.png" --no-sandbox
+           mmdc -i "$f" -o "$n.svg" --no-sandbox
+          done
 
 
