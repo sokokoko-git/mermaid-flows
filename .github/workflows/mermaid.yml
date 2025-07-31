@@ -1,0 +1,36 @@
+name: Generate Mermaid Diagrams
+
+on:
+  push:
+    paths:
+      - 'docs/flows/*.mmd'   # mmdファイルが変更されたら実行
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Mermaid CLI
+        run: npm install -g @mermaid-js/mermaid-cli
+
+      - name: Generate Diagrams
+        run: |
+          for f in docs/flows/*.mmd; do
+            n=${f%.mmd}
+            mmdc -i "$f" -o "$n.png"
+            mmdc -i "$f" -o "$n.svg"
+          done
+
+      - name: Commit Diagrams
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add docs/flows/*.png docs/flows/*.svg
+          git commit -m "Auto-generate Mermaid diagrams"
+          git push
