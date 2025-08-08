@@ -4,7 +4,10 @@ flowchart LR
   A[組み立て前在庫<br/>上限:160] --> B(組み立て)
   B --> C[組み立て後在庫<br/>上限:9]
 
-  C --> D{寸法検査}
+  %% 組み立て後に清掃を追加
+  C --> C1(清掃)
+  C1 --> D{寸法検査}
+
   D -->|OK| E{外観検査}
   D -->|NG| D1[寸法修正]
   %% 修正品は組み立て後在庫へ戻す
@@ -21,13 +24,13 @@ flowchart LR
   H --> I[梱包中在庫<br/>上限:5]
   I --> J[梱包済み在庫]
 
-  %% スタイル定義（対応していないビューアでは無視されます）
+  %% スタイル定義
   classDef store fill:#f6f6f6,stroke:#888,stroke-width:1px;
   classDef proc fill:#e8f4ff,stroke:#268bd2,stroke-width:1.5px;
   classDef gate fill:#fffbe6,stroke:#b58900,stroke-width:1.5px;
   classDef fix fill:#fff0f0,stroke:#dc322f,stroke-width:1.5px,stroke-dasharray:3 2;
 
   class A,C,G,I,J store;
-  class B,F,H proc;
+  class B,C1,F,H proc;
   class D,E gate;
   class D1,E1 fix;
