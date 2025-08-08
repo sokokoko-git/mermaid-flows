@@ -1,33 +1,33 @@
 flowchart LR
-  %% GitHub向け：[]の入れ子を避け、改行は <br/> を使用
+  %% GitHub friendly: avoid nested [] and use <br/> for line breaks
 
-  A[組み立て前在庫<br/>上限:160] --> B(組み立て)
-  B --> C[組み立て後在庫<br/>上限:9]
+  A[Pre-assembly Inventory<br/>Max:160] --> B(Assembly)
+  B --> C[Post-assembly Inventory<br/>Max:9]
 
-  %% 組み立て後に清掃を追加
-  C --> C1(清掃)
-  C1 --> D{寸法検査}
+  %% Added cleaning after post-assembly inventory
+  C --> C1(Cleaning)
+  C1 --> D{Dimension Inspection}
 
-  D -->|OK| E{外観検査}
-  D -->|NG| D1[寸法修正]
-  %% 修正品は組み立て後在庫へ戻す
+  D -->|OK| E{Appearance Inspection}
+  D -->|NG| D1[Dimension Rework]
+  %% Reworked items return to post-assembly inventory
   D1 --> C
 
-  E -->|OK| F(清掃)
-  E -->|NG| E1[外観修正]
-  %% 修正品は組み立て後在庫へ戻す
+  E -->|OK| F(Cleaning)
+  E -->|NG| E1[Appearance Rework]
+  %% Reworked items return to post-assembly inventory
   E1 --> C
 
-  F --> G[清掃済み在庫<br/>上限:1]
+  F --> G[Cleaned Inventory<br/>Max:1]
 
-  %% 清掃済み在庫の後に写真撮影工程（特例）を追加
-  G --> G1[写真撮影（検証中）]
-  G1 --> H(梱包 5脚/箱)
+  %% Added photo-taking process (special case) after cleaned inventory
+  G --> G1[Photo Taking (Under Test)]
+  G1 --> H(Packing: 5 Chairs/Box)
 
-  H --> I[梱包中在庫<br/>上限:5]
-  I --> J[梱包済み在庫]
+  H --> I[Packing In-progress Inventory<br/>Max:5]
+  I --> J[Packed Inventory]
 
-  %% スタイル定義
+  %% Style definitions
   classDef store fill:#f6f6f6,stroke:#888,stroke-width:1px;
   classDef proc fill:#e8f4ff,stroke:#268bd2,stroke-width:1.5px;
   classDef gate fill:#fffbe6,stroke:#b58900,stroke-width:1.5px;
