@@ -1,40 +1,33 @@
-graph LR
-  %% Layout arranged roughly from left to right, top to bottom
+flowchart LR
+  %% GitHub friendly: avoid nested [] and use <br/> for line breaks
 
-  A[Pre-assembly Stock\nMax:160\nTarget:160/day] --> B(Assembly Area)
-  B --> C[Post-assembly Stock\nMax:9]
-  C --> C1(Cleaning Station)
-  C1 --> D[Dimension Inspection\nTarget FPY: %]
-  D -->|OK| E[Appearance Inspection\nTarget FPY: %]
-  D -->|NG| D1[Dimension Rework Area]
+  A[Pre-assembly Stock<br/>Max:160<br/>Target:160/day] --> B(Assembly)
+  B --> C[Post-assembly Stock<br/>Max:9]
+
+  %% Added cleaning after post-assembly stock
+  C --> C1(Cleaning)
+  C1 --> D{Dimension Inspection<br/>Target FPY: %}
+
+  D -->|OK| E{Appearance Inspection<br/>Target FPY: %}
+  D -->|NG| D1[Dimension Rework]
+  %% Reworked items return to post-assembly stock
   D1 --> C
 
-  E -->|OK| F(Cleaning Station)
-  E -->|NG| E1[Appearance Rework Area]
+  E -->|OK| F(Cleaning)
+  E -->|NG| E1[Appearance Rework]
+  %% Reworked items return to post-assembly stock
   E1 --> C
 
-  F --> G[Cleaned Stock\nMax:1]
-  G --> G1[Photo Taking Station\n(Under Test)]
-  G1 --> H(Packing Area\n5 Chairs/Box)
-  H --> I[Packing In-progress Stock\nMax:5\n1 box = 5 chairs]
-  I --> J[Packed Stock Storage]
+  F --> G[Cleaned Stock<br/>Max:1]
 
-  %% Physical layout grouping (optional)
-  subgraph Assembly Zone
-    A --> B --> C --> C1
-  end
+  %% Added photo-taking process (special case) after cleaned stock
+  G --> G1["Photo Taking<br/>(Under Test)"]
+  G1 --> H(Packing<br/>5 Chairs/Box)
 
-  subgraph Inspection & Rework Zone
-    C1 --> D --> E --> F --> G
-    D1
-    E1
-  end
+  H --> I[Packing In-progress Stock<br/>Max:5<br/>1 box = 5 chairs]
+  I --> J[Packed Stock]
 
-  subgraph Packing Zone
-    G --> G1 --> H --> I --> J
-  end
-
-  %% Styles
+  %% Style definitions
   classDef store fill:#f6f6f6,stroke:#888,stroke-width:1px;
   classDef proc fill:#e8f4ff,stroke:#268bd2,stroke-width:1.5px;
   classDef gate fill:#fffbe6,stroke:#b58900,stroke-width:1.5px;
