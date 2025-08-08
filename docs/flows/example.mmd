@@ -1,14 +1,14 @@
 flowchart LR
   %% GitHub friendly: avoid nested [] and use <br/> for line breaks
 
-  A[Pre-assembly Stock<br/>Max:160<br/>Target:160/day] --> B(Assembly)
+  A[Pre-assembly Stock<br/>Max:160] --> B(Assembly)
   B --> C[Post-assembly Stock<br/>Max:9]
 
   %% Added cleaning after post-assembly stock
   C --> C1(Cleaning)
-  C1 --> D{Dimension Inspection<br/>Target FPY: %}
+  C1 --> D{Dimension Inspection}
 
-  D -->|OK| E{Appearance Inspection<br/>Target FPY: %}
+  D -->|OK| E{Appearance Inspection}
   D -->|NG| D1[Dimension Rework]
   %% Reworked items return to post-assembly stock
   D1 --> C
@@ -24,7 +24,7 @@ flowchart LR
   G --> G1["Photo Taking<br/>(Under Test)"]
   G1 --> H(Packing<br/>5 Chairs/Box)
 
-  H --> I[Packing In-progress Stock<br/>Max:5<br/>1 box = 5 chairs]
+  H --> I[Packing In-progress Stock<br/>Max:5]
   I --> J[Packed Stock]
 
   %% Style definitions
