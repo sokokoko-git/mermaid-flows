@@ -20,7 +20,10 @@ flowchart LR
 
   F --> G[清掃済み在庫<br/>上限:1]
 
-  G --> H(梱包 5脚/箱)
+  %% 清掃済み在庫の後に写真撮影工程（特例）を追加
+  G --> G1[写真撮影（検証中）]
+  G1 --> H(梱包 5脚/箱)
+
   H --> I[梱包中在庫<br/>上限:5]
   I --> J[梱包済み在庫]
 
@@ -29,8 +32,10 @@ flowchart LR
   classDef proc fill:#e8f4ff,stroke:#268bd2,stroke-width:1.5px;
   classDef gate fill:#fffbe6,stroke:#b58900,stroke-width:1.5px;
   classDef fix fill:#fff0f0,stroke:#dc322f,stroke-width:1.5px,stroke-dasharray:3 2;
+  classDef special fill:#e0ffe0,stroke:#2aa198,stroke-width:1.5px,stroke-dasharray:5 3;
 
   class A,C,G,I,J store;
   class B,C1,F,H proc;
   class D,E gate;
   class D1,E1 fix;
+  class G1 special;
